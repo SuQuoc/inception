@@ -1,0 +1,41 @@
+
+PHP_______________________________________
+sudo apt update 
+sudo apt install php-fpm
+# confirm with yes
+
+
+
+
+Wordpress_______________________________________
+	sudo apt update
+	
+	#download wordpress
+	wget -c https://wordpress.org/latest.tar.gz
+	#extract gz-file
+	tar -xzvf latest.tar.gz 
+
+	sudo cp -R wordpress /var/www/html/quocsuTEST.com
+
+	sudo chown -R www-data:www-data /var/www/html/quocsuTEST.com
+
+	#create database for website
+	sudo mysql -u root -p
+Mariadb__________________________________________
+	sudo apt install mariadb-server mariadb-client
+	sudo mysql_secure_installation
+	- Switch to unix_socket authentication: n
+	- Change the root password?:  n
+	y
+	y
+	y
+	y
+
+	connect to database:
+	sudo mysql -u root 
+	
+	
+	
+General________________________________________
+To check any service status:
+	sudo systemctl status "service name"
