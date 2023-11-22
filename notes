@@ -21,6 +21,8 @@ Wordpress_______________________________________
 
 	#create database for website
 	sudo mysql -u root -p
+
+
 Mariadb__________________________________________
 	sudo apt install mariadb-server mariadb-client
 	sudo mysql_secure_installation
@@ -39,3 +41,13 @@ Mariadb__________________________________________
 General________________________________________
 To check any service status:
 	sudo systemctl status "service name"
+
+
+
+
+
+
+MySQL shit
+user: quocsu
+pw: uknow
+root: 
