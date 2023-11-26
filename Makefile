@@ -16,4 +16,7 @@ nredocker:
 	docker rm -f nginxcontain
 	docker rmi nginx
 
+resetV:
+	sudo rm -r /var/lib/docker/volumes/srcs_wordpress-data
+
 .PHONY: nginx nstart nredocker

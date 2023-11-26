@@ -24,7 +24,7 @@ COPY ./config/nginx.conf /etc/nginx/conf.d/
 RUN mkdir -p /run/nginx
 
 #the only port allowed
-#EXPOSE	443
+EXPOSE	443
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
