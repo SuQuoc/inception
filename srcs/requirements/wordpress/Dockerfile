@@ -16,7 +16,7 @@ RUN apt-get install -y \
 
 # copy the php www.config (default) file to correct dir
 # dont i already have one with installing php-fpm?
-COPY www.conf /etc/php/8.1/fpm/pool.d/ 
+COPY www.conf /etc/php/7.4/fpm/pool.d/ 
 
 COPY ./setup_wordpress.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup_wordpress.sh
