@@ -35,6 +35,9 @@ Mariadb__________________________________________
 
 	connect to database:
 	sudo mysql -u root 
+
+
+	sudo systemctl is-enabled mariadb.service # making sure mariadb runs at start-up 
 	
 	
 	

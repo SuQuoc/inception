@@ -12,6 +12,7 @@ RUN mkdir /etc/nginx/ssl
 
 #RUN chmod 700 /etc/nginx/ssl
 
+##### try using -out $CERTS_
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
        -out /etc/nginx/ssl/qtran.crt \
        -keyout /etc/nginx/ssl/qtran.key \

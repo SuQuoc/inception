@@ -12,7 +12,7 @@ else
     ### 
 
 
-    wget http://wordpress.org/latest.tar.gz
+    wget http://wordpress.org/latest.tar.gz # is this prohibited? its not a tag
     tar xfz latest.tar.gz
     mkdir -p /var/www/html/qtran.42.fr #creating dir (unsure if name makes sense here)
     cp -R wordpress /var/www/html/qtran.42.fr  #copy wp
@@ -38,4 +38,5 @@ fi
 
 mkdir -p /run/php # if this is put in the if statement, the 2nd time call compose up wont work cause it cant find that folder although i have volumes
 # to execute the CMD in Dockerfile
-exec "$@"
+# dont like that way --> try to use /usr/sbin/php-fpm7.4 in this script and CMD ["-F"] or "/usr/sbin/php-fpm7.4 -F" and CMD [""] if this works
+exec "$@" 

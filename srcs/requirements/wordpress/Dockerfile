@@ -18,9 +18,9 @@ RUN apt-get install -y \
 # dont i already have one with installing php-fpm?
 COPY www.conf /etc/php/7.4/fpm/pool.d/ 
 
-COPY ./setup_wordpress.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/setup_wordpress.sh
-ENTRYPOINT ["/usr/local/bin/setup_wordpress.sh"]
+COPY ./wp-docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/wp-docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/wp-docker-entrypoint.sh"]
 
 #We go the html directory, necessary? already in the script
 #WORKDIR /var/www/html/
