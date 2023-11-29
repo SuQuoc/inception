@@ -23,16 +23,15 @@ else
     
     #Changing the following values in the wordpress(or your web-page name)/wp-config-sample.php
     cd /var/www/html/qtran.42.fr/wordpress
-    sed -i "s/database_name_here/$MYSQL_DATABASE/1" wp-config-sample.php
-    sed -i "s/username_here/$MYSQL_USER/1" wp-config-sample.php
-    sed -i "s/password_here/$MYSQL_PASSWORD/1" wp-config-sample.php
-    sed -i "s/localhost/$MYSQL_HOSTNAME/1" wp-config-sample.php
+    sed -i "s/database_name_here/$MYSQL_DATABASE/" wp-config-sample.php
+    sed -i "s/username_here/$MYSQL_USER/" wp-config-sample.php
+    sed -i "s/password_here/$MYSQL_PASSWORD/" wp-config-sample.php
+    sed -i "s/localhost/$MYSQL_HOSTNAME/" wp-config-sample.php
     mv wp-config-sample.php wp-config.php
     #sed (editor) changing strings in a file (in-place)
     #sed -i (in-place) "s/pattern/replacement/options" filename
     #s: This is the substitute command itself.
     #options:
-    #   - 1, changes 1st occurrence
     #   - g, chnages all occurrences
 fi
 

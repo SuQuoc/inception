@@ -1,13 +1,19 @@
 #!/bin/bash
 
-mysql_install_db #seems unecessary if using volumes?
 
-/etc/init.d/mysql start
 
-if [ -d "var/lib/mysql/$MY_SQL_DATABASE" ]
+if [ -d "/var/lib/mysql/$MY_SQL_DATABASE" ]
 then
     echo "Database already exists"
 else
+
+
+mysql_install_db #seems unecessary if using volumes?
+
+# changed mysql to mariadb
+/etc/init.d/mariadb start
+
+
 #Set root option so that connexion without root password is not possible
 # each y and n was for the following setup-requests from mysql
 # 1. change root pw?
@@ -43,9 +49,11 @@ GRANT ALL ON $MY_SQL_DATABASE.* TO "$MYSQL_USER"@'%' IDENTIFIED BY $MYSQL_PASSWO
 FLUSH PRIVILEGES;
 mysql -u root #why do we connect
 
-mysql -u root -p $MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /usr/local/bin/wordpress.sql
+# mysql -u root -p $MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /usr/local/bin/wordpress.sql # whats that shit for 
 
+
+/etc/init.d/mariadb stop
 fi
 
-/etc/init.d/mysql stop
+
 exec "$@"

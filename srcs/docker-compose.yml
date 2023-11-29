@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   nginx:  #container name
+    depends_on:
+      - wordpress
     image: nginx:inc
     build: ./requirements/nginx
     ports:
@@ -32,10 +34,13 @@ services:
       - inception
     restart: always
 
+
+# On Linux, the default location for Docker data is /var/lib/docker/volumes/
 volumes:
   wordpress-data:
     driver: local
-  #mariadb-data:
+  mariadb-data:
+    driver: local
 
 networks:
   inception:
