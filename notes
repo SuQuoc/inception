@@ -48,9 +48,42 @@ To check any service status:
 
 
 
+Volumes in Docker_______________________________
+/var/lib/docker/volumes
+# u dont have access so u have to start a secure shell to get into it: sudo -s
+
 
 
 MySQL shit
 user: quocsu
 pw: uknow
 root: 
+
+
+
+
+nginx:  #container name
+    depends_on:
+      - wordpress
+    image: nginx:inc
+    build: ./requirements/nginx
+    ports:
+      - 443:443
+    volumes:
+      - wordpress-data:/var/www/html
+    networks:
+      - inception
+    restart: always
+  
+  wordpress:
+    image: wordpress:inc
+    build: ./requirements/wordpress
+    volumes:
+     - wordpress-data:/var/www/html
+    networks:
+      - inception
+    restart: always
+    depends_on:
+      - mariadb
+    env_file:
+    - .env

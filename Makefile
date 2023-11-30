@@ -1,19 +1,33 @@
 
 NGINX_DIR = srcs/requirements/nginx
 MARIADB_DIR = srcs/requirements/mariadb
-
+COMPOSE_DIR = srcs
 
 all:
 	echo "NO all"
 
+
+# mariadb____________________________________________________________
 mariadb:
 # might have to add this line
 # sudo service mysql stop
 	docker build -t mariadb:inc $(MARIADB_DIR)
-	docker run -p 3306:3306 --name mariadbtainer mariadb:inc
+	docker run --env-file ./srcs/.env -p 3306:3306 --name mariadbtainer mariadb:inc
 
+mdbClean:
+	docker stop mariadbtainer
+	docker rm -f mariadbtainer
+	docker rmi mariadb:inc
+
+mdbRe: mdbClean
+	make mariadb
+
+mdbIn:
+	docker exec -it mariadbtainer sh
+
+# nginx______________________________________________________________
 nginx:
-	docker build -t nginx:incept $(NGINX_DIR)
+	docker build -t nginx:inc $(NGINX_DIR)
 	docker run -d -p 443:443 --name nginxcontain nginx
 
 nstart:
@@ -22,21 +36,18 @@ nstart:
 nredocker:
 	docker stop nginxcontain
 	docker rm -f nginxcontain
-	docker rmi nginx
+	docker rmi nginx:inc
 
-# deleting wordpress volume
-resetV:
-	sudo rm -r /var/lib/docker/volumes/srcs_wordpress-data
-
-
-
-di:
+dimd:
 	docker images
 
 
-dc:
+dtainer:
 	docker ps -a 
 
+
+
+# Docker volumes____________________________________________________
 # removing all docker containers
 rmalldc:
 	docker rm -f $$(docker ps -aq)
@@ -45,5 +56,22 @@ rmalldc:
 rmalldi:
 	docker rmi -f $$(docker images -q)
 
+dVolPrune: rmalldc
+	docker volume prune -f
+	docker volume rm srcs_mariadb-data
+	docker volume rm srcs_wordpress-data
 
-.PHONY: nginx nstart nredocker rmalldc di dc
+
+# deleting wordpress volume
+resetV:
+	sudo rm -r /var/lib/docker/volumes/srcs_wordpress-data
+
+# Docker compose____________________________________________________
+dCompUp:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml up
+
+dCompDown:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
+
+
+PHONY: nginx nstart nredocker rmalldc rmalldi dimg dtainer dVolPrune dCompUp dCompDown resetV dVolPrune
