@@ -25,6 +25,11 @@ mdbRe: mdbClean
 mdbIn:
 	docker exec -it mariadbtainer sh
 
+mdbCompClean:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
+	docker rmi mariadb:inc
+	docker volume rm srcs_mariadb-data
+
 # nginx______________________________________________________________
 nginx:
 	docker build -t nginx:inc $(NGINX_DIR)
@@ -68,7 +73,7 @@ resetV:
 
 # Docker compose____________________________________________________
 dCompUp:
-	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml up
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml up --build
 
 dCompDown:
 	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
