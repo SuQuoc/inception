@@ -56,7 +56,10 @@ To check any service status:
 
 
 # Locations of files
-my.cnf:   			  /etc/mysql/
-50-server.cnf:		/etc/mysql/mariadb.conf.d/50-server.cnf
+my.cnf:   				/etc/mysql/
+50-server.cnf:			/etc/mysql/mariadb.conf.d/50-server.cnf
 
 
+
+# Questions
+- whats portmapping in general and in docker

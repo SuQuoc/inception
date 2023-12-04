@@ -1,7 +1,8 @@
 
-NGINX_DIR = srcs/requirements/nginx
-MARIADB_DIR = srcs/requirements/mariadb
-COMPOSE_DIR = srcs
+NGINX_DIR 		= srcs/requirements/nginx
+WORDPRESS_DIR 	= srcs/requirements/wordpress
+MARIADB_DIR 	= srcs/requirements/mariadb
+COMPOSE_DIR 	= srcs
 
 all:
 	echo "NO all"
@@ -34,7 +35,7 @@ mdbCompClean:
 # nginx______________________________________________________________
 nginx:
 	docker build -t nginx:inc $(NGINX_DIR)
-	docker run -d -p 443:443 --name nginxcontain nginx
+	docker run -p 443:443 --name nginxtainer nginx:inc
 
 nstart:
 	docker start nginxcontain
@@ -44,6 +45,20 @@ nredocker:
 	docker rm -f nginxcontain
 	docker rmi nginx:inc
 
+# Wordpress______________________________________________________________
+wp:
+	docker build -t wordpress:inc $(WORDPRESS_DIR)
+	docker run -p 9000:9000 --name wptainer wordpress:inc
+
+wpstart:
+	docker start wptainer
+
+wpClean:
+	docker stop wptainer
+	docker rm -f wptainer
+	docker rmi wordpress:inc
+
+# General docker_____________________________________________________
 dimd:
 	docker images
 

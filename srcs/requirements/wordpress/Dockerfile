@@ -12,7 +12,8 @@ RUN apt-get install -y \
 	php-cgi \
 	php-pdo \
 	php-gd php-cli \
-	php-mbstring
+	php-mbstring \
+    mariadb-client
 
 # copy the php www.config (default) file to correct dir
 # dont i already have one with installing php-fpm?

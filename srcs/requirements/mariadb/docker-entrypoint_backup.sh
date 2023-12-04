@@ -12,7 +12,8 @@ then
 else
   #mysql_install_db #might not be necessary since mariadb 10.2
   
-  service mariadb start
+  # starting it with safe will lead double login try, not rly a problem but stil dont like it 
+  /usr/bin/mysqld_safe --datadir=/var/lib/mysql &
   until mysqladmin ping 2> /dev/null; do
     sleep 2
   done
@@ -46,8 +47,7 @@ EOF
 
   #killall mysqld_safe 2> /dev/null #doesnt kill the process maybe because the script is a wrapper and only stops if mariadb stops
   # only the following cmd workd inside the container but didnt stop double login try
-  # killall mariadbd 2> /dev/null
-  kill -TERM $(cat /var/run/mysqld.pid)
+  killall mariadbd 2> /dev/null
 fi
 
 exec "$@"
