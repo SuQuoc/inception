@@ -23,5 +23,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 EXPOSE 3306
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-CMD ["mysqld_safe"]
-
+CMD ["mariadbd", "-uroot"]

@@ -16,7 +16,8 @@ services:
   
   wordpress:
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     image: wordpress:inc
     build: ./requirements/wordpress
     volumes:
@@ -38,6 +39,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    healthcheck:
+      test: "mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -e 'select 1;'"
+      interval: 1s
+      retries: 20
 
 
 # On Linux, the default location for Docker data is /var/lib/docker/volumes/

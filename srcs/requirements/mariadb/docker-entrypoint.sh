@@ -13,22 +13,28 @@ else
   #mysql_install_db #might not be necessary since mariadb 10.2
   
   service mariadb start
+  
   until mysqladmin ping 2> /dev/null; do
     sleep 2
   done
+  echo "BREAKPOINT !!!!!!!!!"
+  echo "BREAKPOINT !!!!!!!!!"
+  echo "BREAKPOINT !!!!!!!!!"
+  echo "BREAKPOINT !!!!!!!!!"
+  echo "BREAKPOINT !!!!!!!!!"
   
-  echo "DOES THIS DOLLAR SHIT WORK?: '$MYSQL_ROOT_PASSWORD'"
+  #echo "DOES THIS DOLLAR SHIT WORK?: '$MYSQL_ROOT_PASSWORD'"
   
-  mysql -u root <<EOF
+  mysql -u root << EOF
+    
+    CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
+    
+    # Setup root PW since its without one right now
     FLUSH PRIVILEGES;
     ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
     
-    
-    CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
-    # Setup root PW since its without one right now
-    
     # Removes root user entries that are configured to connect from hosts other than the local machine.
-    DELETE FROM mysql.user WHERE user='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+    #DELETE FROM mysql.user WHERE user='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
     
     # deletes user accounts from the mysql.user table where the username is an empty string ('').
     DELETE FROM mysql.user WHERE user='';
@@ -37,43 +43,12 @@ else
     CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
     GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
     FLUSH PRIVILEGES;
+    SHOW DATABASES;
 EOF
-  # dont know why this doesnt work:
-  #mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
-  #until ! mysqladmin ping 2> /dev/null; do
-  #  sleep 1
-  #done
 
-  #killall mysqld_safe 2> /dev/null #doesnt kill the process maybe because the script is a wrapper and only stops if mariadb stops
-  # only the following cmd workd inside the container but didnt stop double login try
-  # killall mariadbd 2> /dev/null
-  kill -TERM $(cat /var/run/mysqld.pid)
+  # necessary to prevent exit code 1 but doint know why
+  mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD shutdown 
+  
 fi
 
 exec "$@"
-
-
-
-# changed mysql to mariadb
-#/etc/init.d/mariadb start
-
-
-#mysql -u root << EOF
-#  CREATE USER 'root'@'%' IDENTIFIED BY someshitPW; # Creating new user for database
-#  GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
-#  FLUSH PRIVILEGES;
-#
-#  CREATE DATABASE $MYSQL_DATABASE; # creating database for the website qtran.42.fr
-#  GRANT ALL ON $MYSQL_DATABASE.* TO "$MYSQL_USER"@'%' IDENTIFIED BY $MYSQL_PASSWORD;
-#  FLUSH PRIVILEGES;
-#EOF
-#
-# mysql -u root #why do we connect
-
-# mysql -u root -p $MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /usr/local/bin/wordpress.sql # whats that shit for 
-
-
-#/etc/init.d/mariadb stop
-#fi
-
-

@@ -3,21 +3,19 @@
 if [ -f /var/www/html/qtran.42.fr/wordpress/wp-config.php ]; then
     echo "WordPress already setup"
 else
-    ### Get wp client (only seen on github, no other guides)
+    ### Get wp client
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar 
     mv wp-cli.phar /usr/local/bin/wp
-    ### 
+    ###
 
+    # Creating the directory where i want to store my php (html) files for my web-page
     mkdir -p /var/www/html/qtran.42.fr/wordpress
     cd /var/www/html/qtran.42.fr/wordpress
     
     wp core download --allow-root
 
-    until mysqladmin --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=mariadb ping; do
-		sleep 2
-	done
-
+    # Creating the wp-config.php file
     wp config create \
         --allow-root \
         --dbname=$MYSQL_DATABASE \
@@ -31,7 +29,8 @@ else
         --title=qtranInception \
         --admin_user=$WP_ADMIN \
         --admin_password=$ADMIN_PW \
-        --admin_email=$ADMIN_EMAIL
+        --admin_email=$ADMIN_EMAIL \
+        --skip-email #Don’t send an email notification to the new admin user (email service not setup).
 
     wp user create \
         --allow-root \
@@ -41,11 +40,14 @@ else
         --user_pass=$EDITOR_PW
 fi
 
-mkdir -p /run/php # if this is put in the if statement, the 2nd time call compose up wont work cause it cant find that folder although i have volumes
+# if this is put in the if statement, the 2nd time compose up is called wont work
+# cause the volume is not mounting this dir 
+mkdir -p /run/php 
+
 
 # to execute the CMD in Dockerfile
-# dont like that way --> try to use /usr/sbin/php-fpm7.4 in this script and CMD ["-F"] or "/usr/sbin/php-fpm7.4 -F" and CMD [""] if this works
-exec "$@" 
+# --> try to use /usr/sbin/php-fpm7.4 in this script and CMD ["-F"] (heard its better but not sure)
+exec "$@"
 
 
 

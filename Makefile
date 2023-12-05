@@ -93,6 +93,9 @@ dCompUp:
 
 dCompDown:
 	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
+	docker rmi wordpress:inc
+	docker rmi mariadb:inc
+	docker rmi nginx:inc
 	docker volume rm srcs_mariadb-data
 	docker volume rm srcs_wordpress-data
 

@@ -15,16 +15,12 @@ RUN apt-get install -y \
 	php-mbstring \
     mariadb-client
 
-# copy the php www.config (default) file to correct dir
-# dont i already have one with installing php-fpm?
+# overwriting (COPY replaces if already existing) the php www.config (default) file to correct dir
 COPY www.conf /etc/php/7.4/fpm/pool.d/ 
 
 COPY ./wp-docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/wp-docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/wp-docker-entrypoint.sh"]
-
-#We go the html directory, necessary? already in the script
-#WORKDIR /var/www/html/
 
 # make it available for only inter-container communication
 # expose port form one container is only available to other containers from the same hostmachine

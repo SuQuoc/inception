@@ -56,10 +56,22 @@ To check any service status:
 
 
 # Locations of files
+## Mariadb
 my.cnf:   				/etc/mysql/
 50-server.cnf:			/etc/mysql/mariadb.conf.d/50-server.cnf
 
+## Wordpress
+wp-config.php			/var/www/html/ (in my case append: qtran.42.fr/wordpress)
 
+
+
+
+# Problems i faced
+- having 2 instances of mariadb service (in 1 container i think) running
+	- switched from mysqld_safe -datadir=... & to service mariadb start
+- both mariadb instances exiting with 137
+	- changed the CMD in Dockerfile from mysqld_safe to "mariadbd -uroot" 
+- if not 
 
 # Questions
 - whats portmapping in general and in docker
