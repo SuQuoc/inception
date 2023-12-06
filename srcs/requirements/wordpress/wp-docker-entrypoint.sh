@@ -3,16 +3,16 @@
 if [ -f /var/www/html/qtran.42.fr/wordpress/wp-config.php ]; then
     echo "WordPress already setup"
 else
-    ### Get wp client
+    # Get wp client
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar 
-    mv wp-cli.phar /usr/local/bin/wp
-    ###
+    mv wp-cli.phar /usr/local/bin/wp # adding it to PATH
 
     # Creating the directory where i want to store my php (html) files for my web-page
     mkdir -p /var/www/html/qtran.42.fr/wordpress
     cd /var/www/html/qtran.42.fr/wordpress
     
+    # acknowledge that you are intentionally running WP-CLI as the root user, avoid unless necessary
     wp core download --allow-root
 
     # Creating the wp-config.php file

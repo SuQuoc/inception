@@ -24,20 +24,6 @@ sudo apt install php-fpm
 
 
 # Mariadb__________________________________________
-	sudo apt install mariadb-server mariadb-client
-	sudo mysql_secure_installation
-	- Switch to unix_socket authentication: n
-	- Change the root password?:  n
-	y
-	y
-	y
-	y
-
-	connect to database:
-	sudo mysql -u root 
-
-
-	sudo systemctl is-enabled mariadb.service # making sure mariadb runs at start-up 
 	
 	
 	
@@ -45,17 +31,12 @@ sudo apt install php-fpm
 To check any service status:
 	sudo systemctl status "service name"
 
-
-
-
 # Volumes in Docker_______________________________
 /var/lib/docker/volumes
 ## u dont have access so u have to start a secure shell to get into it: sudo -s
 
 
-
-
-# Locations of files
+# Locations of files____________________________________
 ## Mariadb
 my.cnf:   				/etc/mysql/
 50-server.cnf:			/etc/mysql/mariadb.conf.d/50-server.cnf
@@ -63,15 +44,59 @@ my.cnf:   				/etc/mysql/
 ## Wordpress
 wp-config.php			/var/www/html/ (in my case append: qtran.42.fr/wordpress)
 
+## Local machine
+hosts					/etc/
 
 
-
-# Problems i faced
-- having 2 instances of mariadb service (in 1 container i think) running
+# Problems i faced______________________________________
+- not seeing a page with login.42.fr
+	- add the name of your website to /etc/hosts file
+- having 2 instances of mariadb service (in 1 container) running
 	- switched from mysqld_safe -datadir=... & to service mariadb start
+	- probably used mysqld twice instead of using mysql
 - both mariadb instances exiting with 137
-	- changed the CMD in Dockerfile from mysqld_safe to "mariadbd -uroot" 
-- if not 
+	- changed the CMD in Dockerfile from mysqld_safe to "mariadbd -uroot"
+	- i guess docker cant terminate mysqld_safe correctly
+- mysql_secure_installation not working
+	- stil dont know, problematic because of interactive mode
 
-# Questions
-- whats portmapping in general and in docker
+# Questions - whats ...
+- portmapping in general and in docker
+- the difference between mysql vs mysqld (mariadb vs mariadbd)
+    - mysqld is the server executable (one of them)
+    - mysql is the command line client
+    - mysqladmin is a maintenance or administrative utility
+	- https://dev.mysql.com/doc/refman/8.0/en/mysqld.html
+	- https://dev.mysql.com/doc/refman/8.0/en/mysql.html
+- the difference between mysql and mariadb (as Command-Line Client)
+	- nothing, mariadb is a symlink to mysql (cmdline-cli)
+	- so every mariadb "function" can be replaced by mysql (except the CMD[] maybe)
+	- https://mariadb.com/kb/en/mariadb-command-line-client/
+- "service mariadb start" ("or service mariadb start")
+	- uses the init script associated with the MariaDB service to start and manage the mariadbd daemon
+- mysqld_safe
+	- is a script and not a system service, so you wouldn't use the service command to start it.
+	- https://dev.mysql.com/doc/refman/8.0/en/mysqld-safe.html 
+- query
+	- In relational database management systems, a query is any command used to retrieve data from a table.
+## To do:
+	- the difference between static and dynamic web-pages
+	- understanding my.cnf file
+	- work on makefile. Is smth written in subject?
+	- create correct folders 
+
+# Good to know
+- create users to run the service, never use the root for actual production etc.
+- avoid killall to kill a process, problematic if you are running multiple processes
+- when creating the wp-config.php the name of:
+	- database
+	- user
+	- user password
+	- hostname
+  must match the mariadb database configuration (also the service in.yml must match the hostname)
+- wp cli (wordpress command line interface)
+	- https://developer.wordpress.org/cli/commands/
+- docker cli
+	- https://docs.docker.com/engine/reference/commandline/cli/
+	- https://docs.docker.com/get-started/docker_cheatsheet.pdf
+	- https://devhints.io/docker-compose

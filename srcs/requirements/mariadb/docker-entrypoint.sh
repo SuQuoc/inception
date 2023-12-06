@@ -1,10 +1,5 @@
 #!/bin/bash
 
-
-# if [ -f "/home/quocsu/inception/srcs/.env" ]; then
-#   source /home/quocsu/inception/srcs/.env
-# fi
-
 if [ -d "/var/lib/mysql/$MYSQL_DATABASE" ]
 then
   # if the database already exist i dont have to setup mysql again
@@ -12,19 +7,14 @@ then
 else
   #mysql_install_db #might not be necessary since mariadb 10.2
   
-  service mariadb start
+  #service mariadb start
+  mysqld_safe &
   
-  until mysqladmin ping 2> /dev/null; do
+  until mariadb-admin ping > /dev/null 2>&1; do
     sleep 2
   done
-  echo "BREAKPOINT !!!!!!!!!"
-  echo "BREAKPOINT !!!!!!!!!"
-  echo "BREAKPOINT !!!!!!!!!"
-  echo "BREAKPOINT !!!!!!!!!"
-  echo "BREAKPOINT !!!!!!!!!"
-  
-  #echo "DOES THIS DOLLAR SHIT WORK?: '$MYSQL_ROOT_PASSWORD'"
-  
+
+  # connecting to the database and set it up accordingly
   mysql -u root << EOF
     
     CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
@@ -43,12 +33,11 @@ else
     CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
     GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
     FLUSH PRIVILEGES;
-    SHOW DATABASES;
 EOF
 
-  # necessary to prevent exit code 1 but doint know why
-  mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD shutdown 
-  
+  # necessary to prevent exit code 1 but dont know why or to prevent have 2 mariadb services
+  mariadb-admin -uroot -p$MYSQL_ROOT_PASSWORD shutdown 
+
 fi
 
 exec "$@"
