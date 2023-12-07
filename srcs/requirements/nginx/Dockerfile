@@ -4,7 +4,6 @@ FROM debian:bullseye
 RUN apt-get update
 RUN apt-get install -y nginx openssl
 
-
 RUN mkdir /etc/nginx/ssl
 
 #might be unnece. since the files, dirs will have the permissions of the USER executing the docker file
@@ -21,9 +20,6 @@ COPY ./conf/nginx.conf /etc/nginx/conf.d/
 
 # nginx config
 RUN mkdir -p /run/nginx
-
-#the only port allowed
-EXPOSE	443
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
