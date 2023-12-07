@@ -79,11 +79,20 @@ hosts					/etc/
 	- https://dev.mysql.com/doc/refman/8.0/en/mysqld-safe.html 
 - query
 	- In relational database management systems, a query is any command used to retrieve data from a table.
-## To do:
-	- the difference between static and dynamic web-pages
-	- understanding my.cnf file
-	- work on makefile. Is smth written in subject?
-	- create correct folders 
+- the difference between static and dynamic web-pages
+	- static:
+		- each page on a static website is a single html file, which is served from the server to the web-page (visitor)	 
+		- every visitor will see the same page
+		- the content is predefined in the source code and can only change if the original-html code changes
+		- practical for resume pages, any website that shouldnt change based on the user (if users are even required)
+		- the page can stil be interactive but whats visible is predefined in the code  
+		the source code (the code for your page, inlcuding buttons etc., so the page CAN change ) is not build on the server and is already defined in the code and lies ON a server 
+	- dynamic:
+		- the same website (or page) is different for every user (tiktok, youtube, insta)
+		- the data of the user (and behaviour) is stored in a database or backend
+		- what is shown is not hardcoded 
+		- allows you to modify multiple pages aty the same time
+	- https://www.wix.com/blog/static-vs-dynamic-website
 
 # Good to know
 - create users to run the service, never use the root for actual production etc.
@@ -100,3 +109,10 @@ hosts					/etc/
 	- https://docs.docker.com/engine/reference/commandline/cli/
 	- https://docs.docker.com/get-started/docker_cheatsheet.pdf
 	- https://devhints.io/docker-compose
+- tuning mysql performance (or mariadb) --> my.cnf 
+	- https://releem.com/docs/mysql-performance-parameters
+
+
+## To do:	
+	- create correct folders
+	- whats a unix socket 

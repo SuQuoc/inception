@@ -16,9 +16,9 @@ RUN apt-get install -y \
     mariadb-client
 
 # overwriting (COPY replaces if already existing) the php www.config (default) file to correct dir
-COPY www.conf /etc/php/7.4/fpm/pool.d/ 
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/ 
 
-COPY ./wp-docker-entrypoint.sh /usr/local/bin/
+COPY ./tools/wp-docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/wp-docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/wp-docker-entrypoint.sh"]
 

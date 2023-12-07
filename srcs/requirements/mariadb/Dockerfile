@@ -11,14 +11,14 @@ RUN chown -R mysql:mysql /run/mysqld /var/lib/mysql
 RUN chmod 755 /run/mysqld
 
 
-COPY ./my.cnf /etc/mysql/my.cnf
+COPY ./conf/my.cnf /etc/mysql/my.cnf
 RUN chmod 644 /etc/mysql/my.cnf
 RUN chown -R mysql:mysql /etc/mysql/my.cnf
 
 # COPY ./50-server.cnf /etc/mysql/mariadb.conf.d/
 # RUN chown -R mysql:mysql /etc/mysql/mariadb.conf.d/50-server.cnf
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY ./tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh 
 EXPOSE 3306
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

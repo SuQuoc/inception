@@ -4,14 +4,49 @@ WORDPRESS_DIR 	= srcs/requirements/wordpress
 MARIADB_DIR 	= srcs/requirements/mariadb
 COMPOSE_DIR 	= srcs
 
+# Docker compose____________________________________________________
 all:
-	echo "NO all"
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml build
+
+start:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml start
+
+stop:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml stop
+
+up:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml up
+
+down:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
+
+dCompReset:
+	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
+	docker rmi wordpress:inc
+	docker rmi mariadb:inc
+	docker rmi nginx:inc
+	docker volume rm srcs_mariadb-data
+	docker volume rm srcs_wordpress-data
+
+# Docker volumes____________________________________________________
+
+# removing all docker containers
+rmalldc:
+	docker rm -f $$(docker ps -aq)
+
+# removing all docker images
+rmalldi:
+	docker rmi -f $$(docker images -q)
+
+# removing all docker volumes
+dVolPrune: rmalldc
+	docker volume prune -f
+	docker volume rm srcs_mariadb-data
+	docker volume rm srcs_wordpress-data
 
 
 # mariadb____________________________________________________________
 mariadb:
-# might have to add this line
-# sudo service mysql stop
 	docker build -t mariadb:inc $(MARIADB_DIR)
 	docker run --env-file ./srcs/.env -p 3306:3306 --name mariadbtainer mariadb:inc
 
@@ -58,46 +93,9 @@ wpClean:
 	docker rm -f wptainer
 	docker rmi wordpress:inc
 
-# General docker_____________________________________________________
-dimd:
-	docker images
 
-
-dtainer:
-	docker ps -a 
-
-
-
-# Docker volumes____________________________________________________
-# removing all docker containers
-rmalldc:
-	docker rm -f $$(docker ps -aq)
-
-# removing all docker images
-rmalldi:
-	docker rmi -f $$(docker images -q)
-
-dVolPrune: rmalldc
-	docker volume prune -f
-	docker volume rm srcs_mariadb-data
-	docker volume rm srcs_wordpress-data
-
-
-# deleting wordpress volume
-resetV:
-	sudo rm -r /var/lib/docker/volumes/srcs_wordpress-data
-
-# Docker compose____________________________________________________
-dCompUp:
-	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml up --build
-
-dCompDown:
-	docker-compose -f ./$(COMPOSE_DIR)/docker-compose.yml down
-	docker rmi wordpress:inc
-	docker rmi mariadb:inc
-	docker rmi nginx:inc
-	docker volume rm srcs_mariadb-data
-	docker volume rm srcs_wordpress-data
-
-
-PHONY: nginx nstart nredocker rmalldc rmalldi dimg dtainer dVolPrune dCompUp dCompDown resetV dVolPrune
+PHONY:	all forceBuild stop down dCompReset \
+		mariadb mdbClean mdbRe mdbIn mdbCompClean \
+		nginx nstart nredocker \
+		wp wpstart wpClean \
+		rmalldc rmalldi dVolPrune \
