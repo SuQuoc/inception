@@ -86,4 +86,8 @@ hosts					/etc/
 	- sockets are used for client-server services
 	- they contain the IP-address of the machine appended by a port number
 	- all ports up to 1024 are "well kown" meaning, they are used for standard services like email, https, etc.
-	
+- difference between http and https
+	- http sends information via the internet through plain text
+	- meaning everyone who can intercept the messages can see and understand it (messages, passwords, bank information)
+	- https uses encryption to make your message undreadable for interceptors 
+	- only the server you talk to can decrypt the message using it's private key (they agreed on a session key before using )

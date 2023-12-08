@@ -47,8 +47,18 @@ services:
 # On Linux, the default location for Docker data is /var/lib/docker/volumes/
 volumes:
   mariadb-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/qtran/data/mariadb
+      o: bind
   wordpress-data:
-#    driver: local
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/qtran/data/wordpress
+      o: bind
+
 
 networks:
   inception:
