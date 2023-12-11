@@ -39,7 +39,7 @@ hosts					/etc/
 	- nothing, mariadb is a symlink to mysql (cmdline-cli)
 	- so every mariadb "function" can be replaced by mysql (except the CMD[] maybe)
 	- https://mariadb.com/kb/en/mariadb-command-line-client/
-- "service mariadb start" ("or service mariadb start")
+- "service mariadb start" ("or service mysql start")
 	- uses the init script associated with the MariaDB service to start and manage the mariadbd daemon
 - mysqld_safe
 	- is a script and not a system service, so you wouldn't use the service command to start it.
@@ -62,6 +62,7 @@ hosts					/etc/
 	- https://www.wix.com/blog/static-vs-dynamic-website
 
 # Good to know
+- u should NOT RUN docker as root, also not in the container --> create a user and keyword USER 
 - create users to run the service, never use the root for actual production etc.
 - avoid killall to kill a process, problematic if you are running multiple processes
 - when creating the wp-config.php the name of:
@@ -91,3 +92,7 @@ hosts					/etc/
 	- meaning everyone who can intercept the messages can see and understand it (messages, passwords, bank information)
 	- https uses encryption to make your message undreadable for interceptors 
 	- only the server you talk to can decrypt the message using it's private key (they agreed on a session key before using )
+- mysql cli basics:
+	- use "database"
+	- show tables
+	- select * from "tablename"

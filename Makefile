@@ -27,6 +27,10 @@ dCompReset:
 	docker rmi nginx:inc
 	docker volume rm srcs_mariadb-data
 	docker volume rm srcs_wordpress-data
+	sudo rm -r /home/quocsu/qtran/data/mariadb
+	sudo rm -r /home/quocsu/qtran/data/wordpress
+	mkdir /home/quocsu/qtran/data/mariadb
+	mkdir /home/quocsu/qtran/data/wordpress
 
 # Docker volumes____________________________________________________
 
