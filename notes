@@ -37,7 +37,7 @@ hosts					/etc/
 	- https://dev.mysql.com/doc/refman/8.0/en/mysql.html
 - the difference between mysql and mariadb (as Command-Line Client)
 	- nothing, mariadb is a symlink to mysql (cmdline-cli)
-	- so every mariadb "function" can be replaced by mysql (except the CMD[] maybe)
+	- so every mariadb-cli can be replaced by mysql (so most or all things STARTING with "mariadb", meaning the cli. For example NOT "service mariadb start")
 	- https://mariadb.com/kb/en/mariadb-command-line-client/
 - "service mariadb start" ("or service mysql start")
 	- uses the init script associated with the MariaDB service to start and manage the mariadbd daemon
