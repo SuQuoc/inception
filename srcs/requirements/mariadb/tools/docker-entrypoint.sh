@@ -28,7 +28,7 @@ then
 else
   #mysql_install_db #might not be necessary since mariadb 10.2
   setup_user
-  mysqld --bootstrap < tmp.sql
+  mariadbd --bootstrap < tmp.sql
   rm -f tmp.sql
 
   
