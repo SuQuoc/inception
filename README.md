@@ -57,7 +57,10 @@ __Local machine__
 	- stil dont know, problematic because of interactive mode
 
 # Whats ...
-- portmapping in general and in docker
+- port-mapping (=forwarding) in general and in docker
+    -  to forward incoming traffic from port to be forwarded to another port of a machine
+    -  normally a router blocks incoming traffic which was not requested by you (for exmaple looking up a webpage)
+    -  with forwarding the traffic can be forwarded without you requesting it 
 - the difference between mysql vs mysqld (mariadb vs mariadbd)
     - mysqld is the server executable (one of them)
     - mysql is the command line client
