@@ -1,6 +1,5 @@
 FROM debian:bullseye
 
-# -y flag: assume yes -> installing non interactive
 RUN apt-get update
 RUN apt-get install -y \
     bash \

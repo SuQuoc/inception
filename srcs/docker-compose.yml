@@ -59,6 +59,5 @@ volumes:
       device: ${HOME}/qtran/data/wordpress
       o: bind
 
-
 networks:
   inception:

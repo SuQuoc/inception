@@ -26,22 +26,9 @@ then
   # if the database already exist i dont have to setup mysql again
   echo "Database already exists: /var/lib/mysql/$MYSQL_DATABASE"
 else
-  #mysql_install_db #might not be necessary since mariadb 10.2
   setup_user
   mariadbd --bootstrap < tmp.sql
   rm -f tmp.sql
-
-  
-
-  # connecting to the database and set it up accordingly
-  
-  
-    
-
-
-  # necessary to prevent exit code 1 but dont know why or to prevent have 2 mariadb services
-  #mariadb-admin -uroot -p$MYSQL_ROOT_PASSWORD shutdown 
-
 fi
 
 exec "$@"

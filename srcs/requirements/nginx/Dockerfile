@@ -6,11 +6,6 @@ RUN apt-get install -y nginx openssl
 
 RUN mkdir /etc/nginx/ssl
 
-#might be unnece. since the files, dirs will have the permissions of the USER executing the docker file
-#applies to cmds run in here as well
-#RUN chmod 700 /etc/nginx/ssl
-
-# using $CERTS_ and $CERTS_KEY didnt work
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
        -out /etc/nginx/ssl/qtran.crt \
        -keyout /etc/nginx/ssl/qtran.key \

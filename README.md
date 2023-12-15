@@ -103,6 +103,7 @@ __Local machine__
 	- user password
 	- hostname
   must match the mariadb database configuration (also the service in.yml must match the hostname)
+- mysql_install_db might not be necessary since mariadb 10.2
 - wp cli (wordpress command line interface)
 	- https://developer.wordpress.org/cli/commands/
 - docker cli

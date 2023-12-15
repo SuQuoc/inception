@@ -41,12 +41,9 @@ else
 fi
 
 # if this is put in the if statement, the 2nd time compose up is called wont work
-# cause the volume is not mounting this dir 
+# because the volume is not mounting this directory 
 mkdir -p /run/php 
 
-
-# to execute the CMD in Dockerfile
-# --> try to use /usr/sbin/php-fpm7.4 in this script and CMD ["-F"] (heard its better but not sure)
 exec "$@"
 
 
