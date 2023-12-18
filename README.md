@@ -1,4 +1,4 @@
-# inception
+# About The Project
 This project is designed to teach you about docker and docker-compose. For some (like me) its also the first time learning about nginx, wordpress and mariadb and using it in a amateur manner. Each service has its own Dockerfile. I recommend doint it in the following order:
 
 __1. Nginx - webserver__
@@ -27,34 +27,53 @@ The .env file is an example. Your real credentials should not be pushed to git (
 
 
 ## Locations of files, dirs, etc.
-__Nginx__
-* nginx.conf:        /etc/nginx/conf.d/
 
-__Mariadb__
-* my.cnf:             /etc/mysql
-* 50-server.cnf:			/etc/mysql/mariadb.conf.d/50-server.cnf
+ Filename | Path 
+----------|----------
+nginx.conf | /etc/nginx/conf.d/   
+my.cnf | /etc/mysql/
+50-server.cnf | /etc/mysql/mariadb.conf.d/50-server.cnf/
+wp-config.php |	/var/www/html/ (in my case append: qtran.42.fr/wordpress)
+any docker volume | /var/lib/docker/volumes/
+hosts | /etc/
 
-__Wordpress__
-* wp-config.php			/var/www/html/ (in my case append: qtran.42.fr/wordpress)
+## Good to know
+- in order to see your website in the browser add the name of your website to the /etc/hosts file
+- u should NOT RUN docker as root, also not in the container --> create a user and keyword USER 
+- create users to run the service, never use the root for actual production etc.
+- avoid killall to kill a process, problematic if you are running multiple processes
+- when creating the wp-config.php the name of:
+	- database
+	- user
+	- user password
+	- hostname
+  must match the mariadb database configuration (also the service in.yml must match the hostname)
+- mysql_install_db might not be necessary since mariadb 10.2
+- wp cli (wordpress command line interface)
+	- https://developer.wordpress.org/cli/commands/
+- docker cli
+	- https://docs.docker.com/engine/reference/commandline/cli/
+	- https://docs.docker.com/get-started/docker_cheatsheet.pdf
+	- https://devhints.io/docker-compose
+- tuning mysql performance (or mariadb) --> my.cnf 
+	- https://releem.com/docs/mysql-performance-parameters
+- difference between UNIX and IP Sockets
+	- A UNIX socket, AKA Unix Domain Socket, is an inter-process communication mechanism that allows bidirectional data exchange between processes running on the same machine.
+	- UNIX sockets know that they’re executing on the same system, so they can avoid some checks and operations (like routing); which makes them faster and lighter than IP sockets. So if you plan to communicate with processes on the same host, this is a better option than IP sockets.
 
-__Docker__
-* volumes /var/lib/docker/volumes  (u dont have access so u have to start a secure shell to get into it: sudo -s)
-
-__Local machine__
-* hosts					/etc/
-
-
-## Problems i faced:
-- not seeing a page with login.42.fr
-	- add the name of your website to /etc/hosts file
-- having 2 instances of mariadb service (in 1 container) running
-	- switched from mysqld_safe -datadir=... & to service mariadb start
-	- probably used mysqld twice instead of using mysql
-- both mariadb instances exiting with 137
-	- changed the CMD in Dockerfile from mysqld_safe to "mariadbd -uroot"
-	- i guess docker cant terminate mysqld_safe correctly
-- mysql_secure_installation not working
-	- stil dont know, problematic because of interactive mode
+	- IP sockets (especially TCP/IP sockets) are a mechanism allowing communication between processes over the network. (in some cases you could use it for processes on the same hostmachine)
+	- sockets are used for client-server services
+	- they contain the IP-address of the machine appended by a port number
+	- all ports up to 1024 are "well kown" meaning, they are used for standard services like email, https, etc.
+- difference between http and https
+	- http sends information via the internet through plain text
+	- meaning everyone who can intercept the messages can see and understand it (messages, passwords, bank information)
+	- https uses encryption to make your message undreadable for interceptors 
+	- only the server you talk to can decrypt the message using it's private key (they agreed on a session key before using )
+- mysql cli basics:
+	- use "database"
+	- show tables
+	- select * from "tablename"
 
 # Whats ...
 - port-mapping (=forwarding) in general and in docker
@@ -93,40 +112,5 @@ __Local machine__
 		- allows you to modify multiple pages aty the same time
 	- https://www.wix.com/blog/static-vs-dynamic-website
 
-## Good to know
-- u should NOT RUN docker as root, also not in the container --> create a user and keyword USER 
-- create users to run the service, never use the root for actual production etc.
-- avoid killall to kill a process, problematic if you are running multiple processes
-- when creating the wp-config.php the name of:
-	- database
-	- user
-	- user password
-	- hostname
-  must match the mariadb database configuration (also the service in.yml must match the hostname)
-- mysql_install_db might not be necessary since mariadb 10.2
-- wp cli (wordpress command line interface)
-	- https://developer.wordpress.org/cli/commands/
-- docker cli
-	- https://docs.docker.com/engine/reference/commandline/cli/
-	- https://docs.docker.com/get-started/docker_cheatsheet.pdf
-	- https://devhints.io/docker-compose
-- tuning mysql performance (or mariadb) --> my.cnf 
-	- https://releem.com/docs/mysql-performance-parameters
-- difference between UNIX and IP Sockets
-	- A UNIX socket, AKA Unix Domain Socket, is an inter-process communication mechanism that allows bidirectional data exchange between processes running on the same machine.
-	- UNIX sockets know that they’re executing on the same system, so they can avoid some checks and operations (like routing); which makes them faster and lighter than IP sockets. So if you plan to communicate with processes on the same host, this is a better option than IP sockets.
 
-	- IP sockets (especially TCP/IP sockets) are a mechanism allowing communication between processes over the network. (in some cases you could use it for processes on the same hostmachine)
-	- sockets are used for client-server services
-	- they contain the IP-address of the machine appended by a port number
-	- all ports up to 1024 are "well kown" meaning, they are used for standard services like email, https, etc.
-- difference between http and https
-	- http sends information via the internet through plain text
-	- meaning everyone who can intercept the messages can see and understand it (messages, passwords, bank information)
-	- https uses encryption to make your message undreadable for interceptors 
-	- only the server you talk to can decrypt the message using it's private key (they agreed on a session key before using )
-- mysql cli basics:
-	- use "database"
-	- show tables
-	- select * from "tablename"
 
